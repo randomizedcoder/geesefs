@@ -1,0 +1,96 @@
+# .golangci.yml
+#
+# Tier 1: the main gating tier. Tier 0 plus gosec, gocritic, revive, noctx,
+# contextcheck, durationcheck, misspell and gocyclo.
+#
+# Run:
+#   lint                        (inside nix develop, from the repo root)
+#   nix build .#checks.x86_64-linux.golangci-lint
+
+version: "2"
+
+run:
+  timeout: 5m
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: strict
+
+linters:
+  default: none
+  enable:
+    # Tier 0
+    - govet
+    - errcheck
+    - ineffassign
+    - unused
+    - staticcheck
+    # Tier 1
+    - gosec
+    - gocritic
+    - revive
+    - noctx
+    - contextcheck
+    - durationcheck
+    - misspell
+    - gocyclo
+
+  settings:
+    errcheck:
+      exclude-functions:
+        - (io.Closer).Close
+        - (*os.File).Close
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - fmt.Fprint
+
+    govet:
+      enable-all: true
+      disable:
+        # Struct field ordering for padding; churn with no correctness value.
+        - fieldalignment
+
+    staticcheck:
+      checks:
+        - "all"
+        - "-SA1019" # deprecated SDKs; see .golangci-quick.yml
+
+    misspell:
+      locale: US
+
+    gocritic:
+      enabled-checks:
+        - appendAssign
+        - argOrder
+        - badCond
+        - builtinShadow
+        - dupCase
+        - dupSubExpr
+        - nilValReturn
+        - rangeValCopy
+        - sliceClear
+
+    revive:
+      rules:
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: error-return
+        - name: error-strings
+        - name: increment-decrement
+        - name: var-declaration
+
+    gocyclo:
+      min-complexity: 30
+
+  exclusions:
+    generated: strict
+    warn-unused: true
+
+issues:
+  # Report every finding. The defaults (50 per linter, 3 identical) truncate
+  # the list silently, which makes the counts look smaller than they are.
+  max-issues-per-linter: 0
+  max-same-issues: 0

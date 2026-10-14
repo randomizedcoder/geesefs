@@ -1,0 +1,9 @@
+# statix.toml
+#
+# Configuration for `statix`, the Nix antipattern linter, run as the `statix`
+# check (nix/checks/statix.nix).
+#
+# Findings are fixed by rewriting the code, never silenced per-site with
+# `# statix: ignore`. A lint that is wrong for this repo is disabled here, with
+# its reason written next to it. None are disabled today.
+disabled = []

@@ -1,0 +1,61 @@
+# .golangci-quick.yml
+#
+# Tier 0: fast feedback, suitable for pre-commit and local iteration.
+#
+# Run:
+#   lint-quick                  (inside nix develop, from the repo root)
+#   nix build .#checks.x86_64-linux.golangci-lint-quick
+#
+# Tiers nest: everything enabled here is also enabled in .golangci.yml
+# (Tier 1), and everything there in .golangci-comprehensive.yml (Tier 2).
+
+version: "2"
+
+run:
+  timeout: 3m
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: strict
+
+linters:
+  default: none
+  enable:
+    - govet
+    - errcheck
+    - ineffassign
+    - unused
+    - staticcheck
+
+  settings:
+    errcheck:
+      # Close() on a handle and fmt.Fprint* to stdout/stderr are routinely
+      # unchecked and the error is not actionable.
+      exclude-functions:
+        - (io.Closer).Close
+        - (*os.File).Close
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - fmt.Fprint
+
+    staticcheck:
+      checks:
+        - "all"
+        # SA1019 (use of deprecated identifiers): geesefs is built on
+        # aws-sdk-go v1 and azure-storage-blob-go, both deprecated as a whole.
+        # Migrating SDKs is a project, not a lint fix.
+        - "-SA1019"
+
+  exclusions:
+    # Generated protobuf code in core/pb is not ours to lint.
+    generated: strict
+    warn-unused: true
+
+issues:
+  # Report every finding. The defaults (50 per linter, 3 identical) truncate
+  # the list silently, which makes the counts look smaller than they are.
+  max-issues-per-linter: 0
+  max-same-issues: 0
