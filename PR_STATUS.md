@@ -103,8 +103,9 @@ Last updated: 2026-10-14.
   checked to report `WARNING: DATA RACE` on master under
   `CGO_ENABLED=1 go test -race` (each row in its own process, `-count=20`),
   and to be clean after the fix. Each PR also has a benchmark and a
-  benchstat table; #16, #18, #22 and #23 have a second, separate
-  performance commit.
+  benchstat table. #16, #22 and #23 have a second, separate
+  performance commit; #18 has a second commit that switches the loops
+  in `copyUnmodifiedParts` to `range`.
 - #20 (https://github.com/randomizedcoder/geesefs/pull/20) touches
   `sendUploadParts`, which upstream https://github.com/yandex-cloud/geesefs/pull/225
   also changes; expect a trivial conflict, or none.
