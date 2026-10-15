@@ -212,12 +212,14 @@ func (b *AZBlob) refreshToken() (*azblob.ContainerURL, error) {
 		return b.c, nil
 	}
 
+	// Read the clock before taking b.mu to keep the critical section short.
+	now := time.Now().UTC()
 	b.mu.Lock()
 
 	if b.c == nil {
 		b.mu.Unlock()
 		return b.updateToken()
-	} else if b.tokenExpire.Before(time.Now().UTC()) {
+	} else if b.tokenExpire.Before(now) {
 		// our token totally expired, renew inline before using it
 		b.mu.Unlock()
 		b.tokenRenewGate <- 1
@@ -238,7 +240,7 @@ func (b *AZBlob) refreshToken() (*azblob.ContainerURL, error) {
 			// another concurrent goroutine renewed it for us
 			b.mu.Unlock()
 		}
-	} else if b.tokenExpire.Add(b.tokenRenewBuffer).Before(time.Now().UTC()) {
+	} else if b.tokenExpire.Add(b.tokenRenewBuffer).Before(now) {
 		b.mu.Unlock()
 		// only allow one token renew at a time
 		select {
@@ -261,7 +263,11 @@ func (b *AZBlob) refreshToken() (*azblob.ContainerURL, error) {
 			azbLog.Infof("token renewal already in progress")
 		}
 	} else {
+		// Common case: the token is valid. b.mu is already held,
+		// so read b.c here instead of locking again below.
+		c := b.c
 		b.mu.Unlock()
+		return c, nil
 	}
 	return b.currentContainer(), nil
 }
