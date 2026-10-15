@@ -226,8 +226,9 @@ func (b *AZBlob) refreshToken() (*azblob.ContainerURL, error) {
 		b.mu.Lock()
 		// check again, because in the mean time maybe it's renewed
 		if b.tokenExpire.Before(time.Now().UTC()) {
+			expire := b.tokenExpire
 			b.mu.Unlock()
-			azbLog.Warnf("token expired: %v", b.tokenExpire)
+			azbLog.Warnf("token expired: %v", expire)
 			_, err := b.updateToken()
 			if err != nil {
 				azbLog.Errorf("Unable to refresh token: %v", err)
@@ -262,7 +263,15 @@ func (b *AZBlob) refreshToken() (*azblob.ContainerURL, error) {
 	} else {
 		b.mu.Unlock()
 	}
-	return b.c, nil
+	return b.currentContainer(), nil
+}
+
+// currentContainer returns b.c. Another goroutine can replace it in
+// updateToken at any time, so it is read with b.mu held.
+func (b *AZBlob) currentContainer() *azblob.ContainerURL {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.c
 }
 
 func parseSasToken(token string) (expire time.Time) {
