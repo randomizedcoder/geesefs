@@ -30,6 +30,16 @@ Last updated: 2026-10-14.
 | 11 | `fix/flush-fully-zero-parts` | Flush fully zero parts in step 3 of sendUploadParts | https://github.com/randomizedcoder/geesefs/pull/11 | https://github.com/yandex-cloud/geesefs/pull/225 |
 | 12 | `fix/flush-nil-etag` | Don't dereference a missing ETag after a flush | https://github.com/randomizedcoder/geesefs/pull/12 | https://github.com/yandex-cloud/geesefs/pull/226 |
 | 13 | `fix/cluster-to-errno` | Don't panic in toErrno on errors that are not an errno | https://github.com/randomizedcoder/geesefs/pull/13 | https://github.com/yandex-cloud/geesefs/pull/227 |
+| 14 | `fix/race-gcs-delete-blobs` | Fix data race on the error in GCS3.DeleteBlobs | https://github.com/randomizedcoder/geesefs/pull/14 | not yet |
+| 15 | `fix/race-azblob-delete-blobs` | Fix data race on the error in AZBlob.DeleteBlobs | https://github.com/randomizedcoder/geesefs/pull/15 | not yet |
+| 16 | `fix/race-azblob-refresh-token` | Fix data race on the container URL in AZBlob.refreshToken | https://github.com/randomizedcoder/geesefs/pull/16 | not yet |
+| 17 | `fix/race-lookup-maybe-dir` | Fix data races on the results in LookUpInodeMaybeDir | https://github.com/randomizedcoder/geesefs/pull/17 | not yet |
+| 18 | `fix/race-copy-unmodified-parts` | Fix data race on the error in copyUnmodifiedParts | https://github.com/randomizedcoder/geesefs/pull/18 | not yet |
+| 19 | `fix/race-multipart-begin-metadata` | Fix data race on user metadata when a multipart upload starts | https://github.com/randomizedcoder/geesefs/pull/19 | not yet |
+| 20 | `fix/race-file-handles-atomic` | Read inode.fileHandles with atomics | https://github.com/randomizedcoder/geesefs/pull/20 | not yet |
+| 21 | `fix/race-refcnt-atomic` | Access inode.refcnt with atomics only | https://github.com/randomizedcoder/geesefs/pull/21 | not yet |
+| 22 | `fix/race-lookup-inode-attrs` | Fix data races in LookUpInode | https://github.com/randomizedcoder/geesefs/pull/22 | not yet |
+| 23 | `fix/race-cluster-route-info` | Fix data race on the inode owner in ClusterFs.route | https://github.com/randomizedcoder/geesefs/pull/23 | not yet |
 
 ## Upstream PRs (yandex-cloud/geesefs)
 
@@ -66,6 +76,16 @@ Last updated: 2026-10-14.
 | https://github.com/randomizedcoder/geesefs/pull/11 | draft, upstreamed | flusher: zero parts | `TestZeroPartsToFlush` |
 | https://github.com/randomizedcoder/geesefs/pull/12 | draft, upstreamed | flush: missing ETag | `TestUpdateFromFlushETag` |
 | https://github.com/randomizedcoder/geesefs/pull/13 | draft, upstreamed | cluster gRPC | `TestToErrno` |
+| https://github.com/randomizedcoder/geesefs/pull/14 | draft, in review | GCS backend | `TestGCS3DeleteBlobsConcurrentErrors` |
+| https://github.com/randomizedcoder/geesefs/pull/15 | draft, in review | Azure Blob backend | `TestAZBlobDeleteBlobsConcurrentErrors` |
+| https://github.com/randomizedcoder/geesefs/pull/16 | draft, in review | Azure Blob SAS token | `TestAZBlobRefreshTokenConcurrent` |
+| https://github.com/randomizedcoder/geesefs/pull/17 | draft, in review | lookup (HEAD/LIST) | `TestLookUpInodeMaybeDirConcurrent` |
+| https://github.com/randomizedcoder/geesefs/pull/18 | draft, in review | multipart copy | `TestCopyUnmodifiedPartsConcurrentErrors` |
+| https://github.com/randomizedcoder/geesefs/pull/19 | draft, in review | multipart begin | `TestBeginMultipartUploadMetadata` |
+| https://github.com/randomizedcoder/geesefs/pull/20 | draft, in review | inode fileHandles | `TestFileHandlesConcurrentRead` |
+| https://github.com/randomizedcoder/geesefs/pull/21 | draft, in review | inode refcnt | `TestRefcntConcurrentRead` |
+| https://github.com/randomizedcoder/geesefs/pull/22 | draft, in review | FUSE LookUpInode | `TestLookUpInodeConcurrentAttributes` |
+| https://github.com/randomizedcoder/geesefs/pull/23 | draft, in review | cluster routing | `TestClusterRouteConcurrentOwnerChange` |
 
 ## Notes
 
@@ -79,6 +99,16 @@ Last updated: 2026-10-14.
   `core/goofys_test.go`); this is the `go-vet-windows` flake check failure and
   is not caused by any of these PRs.
 
+- #14-#23 are data-race fixes. Each test runs concurrent scenarios and was
+  checked to report `WARNING: DATA RACE` on master under
+  `CGO_ENABLED=1 go test -race` (each row in its own process, `-count=20`),
+  and to be clean after the fix. Each PR also has a benchmark and a
+  benchstat table; #16, #18, #22 and #23 have a second, separate
+  performance commit.
+- #20 (https://github.com/randomizedcoder/geesefs/pull/20) touches
+  `sendUploadParts`, which upstream https://github.com/yandex-cloud/geesefs/pull/225
+  also changes; expect a trivial conflict, or none.
+
 ## Candidates not yet raised
 
 Found in code review, not yet verified in detail or turned into PRs.
@@ -86,6 +116,10 @@ Found in code review, not yet verified in detail or turned into PRs.
 | Where | Bug | Why not yet |
 |---|---|---|
 | `core/backend_azblob.go:240` | SAS token early-renewal condition can never be true (`Add(+buffer)` should be `Add(-buffer)`) | good next candidate |
+| `core/backend_gcs3.go` `DeleteBlob` | the ENOENT check on the delete error never matches | good next candidate |
+| `core/cluster_fs.go` | plain reads/writes of `fileHandles`, `refcnt` and `CacheState` (the same races as #20, #21 and #22, in cluster mode) | cluster mode; left out of #20/#21 on purpose |
+| `core/goofys_fuse.go` `CreateSymlink`, `CreateFile`, `MkNode`, `MkDir` | `InflateAttributes()` and `Attributes` writes without `inode.mu` on the new inode | follow-up to #22, larger change |
+| `core/dir.go` `renameRecursive` | TODO on the inode ID swap; the swap is not atomic as a whole | needs a design decision |
 | `core/backend_adlv2.go:103` | `X-Ms-Date` uses the host's local time zone instead of GMT | good next candidate |
 | `core/buffer_list.go:801` | `mergeRA` can shrink a read-ahead range when merging | good next candidate |
 | `core/utils.go:152` | `xattrEscape` escapes runes, not bytes, so binary values don't round-trip | fix is ~8 lines |
