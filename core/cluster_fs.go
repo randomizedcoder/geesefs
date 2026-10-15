@@ -13,6 +13,7 @@ import (
 
 	"github.com/jacobsa/fuse/fuseops"
 	"github.com/jacobsa/fuse/fuseutil"
+	"github.com/sirupsen/logrus"
 	"github.com/yandex-cloud/geesefs/core/cfg"
 	"github.com/yandex-cloud/geesefs/core/pb"
 	"google.golang.org/grpc"
@@ -984,9 +985,15 @@ func (fs *ClusterFs) route(
 				return
 			} else {
 				// info() reads the owner, so call it before KeepOwnerUnlock
-				info := inode.info()
+				debug := fuseLog.IsLevelEnabled(logrus.DebugLevel)
+				var info string
+				if debug {
+					info = inode.info()
+				}
 				inode.KeepOwnerUnlock()
-				fuseLog.Debugf("this fs is owner of inode %v, but it is not ready", info)
+				if debug {
+					fuseLog.Debugf("this fs is owner of inode %v, but it is not ready", info)
+				}
 				time.Sleep(READY_OWNER_BACKOFF)
 				continue
 			}
@@ -997,7 +1004,9 @@ func (fs *ClusterFs) route(
 			if anotherOwner != nil {
 				inode.ChangeOwnerLock()
 				// info() reads the owner, so call it with the owner lock held
-				fuseLog.Debugf("fs %v is not owner of inode %v, apply new owner %+v and retry", inodeOwner, inode.info(), anotherOwner)
+				if fuseLog.IsLevelEnabled(logrus.DebugLevel) {
+					fuseLog.Debugf("fs %v is not owner of inode %v, apply new owner %+v and retry", inodeOwner, inode.info(), anotherOwner)
+				}
 				inode.applyOwner(anotherOwner)
 				inode.ChangeOwnerUnlock()
 				continue
