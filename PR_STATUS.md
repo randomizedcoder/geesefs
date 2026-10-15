@@ -20,16 +20,16 @@ Last updated: 2026-10-14.
 | 1 | `fix/gcp-iam-error-shadowing` | Report the real error when the GCP IAM metadata request fails | https://github.com/randomizedcoder/geesefs/pull/1 | https://github.com/yandex-cloud/geesefs/pull/215 |
 | 2 | `fix/azure-prefer-full-key` | Prefer full-permission Azure account keys as intended | https://github.com/randomizedcoder/geesefs/pull/2 | https://github.com/yandex-cloud/geesefs/pull/216 |
 | 3 | `fix/adlv2-lease-renew-leak` | Stop the ADLv2 lease renewal goroutine when signalled | https://github.com/randomizedcoder/geesefs/pull/3 | https://github.com/yandex-cloud/geesefs/pull/217 |
-| 4 | `fix/cgroup-path-exists` | Use the per-cgroup memory directory when it exists | https://github.com/randomizedcoder/geesefs/pull/4 | not yet |
-| 5 | `fix/pmetadata-key-lookup` | Keep metadata values whose keys are not lowercase | https://github.com/randomizedcoder/geesefs/pull/5 | not yet |
-| 6 | `fix/s3-copy-threshold-units` | Default the S3 multipart copy threshold to 128 MiB, not 128 bytes | https://github.com/randomizedcoder/geesefs/pull/6 | not yet |
-| 7 | `fix/v2signer-escaped-path` | Sign the escaped path for virtual-hosted V2 requests | https://github.com/randomizedcoder/geesefs/pull/7 | not yet |
-| 8 | `fix/drop-group-before-user` | Drop the group before the user when giving up root | https://github.com/randomizedcoder/geesefs/pull/8 | not yet |
-| 9 | `fix/help-flag` | Make --help print the help and exit successfully | https://github.com/randomizedcoder/geesefs/pull/9 | not yet |
-| 10 | `fix/flusher-priority-index` | Check every lower priority for in-flight flushes in Flusher | https://github.com/randomizedcoder/geesefs/pull/10 | not yet |
-| 11 | `fix/flush-fully-zero-parts` | Flush fully zero parts in step 3 of sendUploadParts | https://github.com/randomizedcoder/geesefs/pull/11 | not yet |
-| 12 | `fix/flush-nil-etag` | Don't dereference a missing ETag after a flush | https://github.com/randomizedcoder/geesefs/pull/12 | not yet |
-| 13 | `fix/cluster-to-errno` | Don't panic in toErrno on errors that are not an errno | https://github.com/randomizedcoder/geesefs/pull/13 | not yet |
+| 4 | `fix/cgroup-path-exists` | Use the per-cgroup memory directory when it exists | https://github.com/randomizedcoder/geesefs/pull/4 | https://github.com/yandex-cloud/geesefs/pull/218 |
+| 5 | `fix/pmetadata-key-lookup` | Keep metadata values whose keys are not lowercase | https://github.com/randomizedcoder/geesefs/pull/5 | https://github.com/yandex-cloud/geesefs/pull/219 |
+| 6 | `fix/s3-copy-threshold-units` | Default the S3 multipart copy threshold to 128 MiB, not 128 bytes | https://github.com/randomizedcoder/geesefs/pull/6 | https://github.com/yandex-cloud/geesefs/pull/220 |
+| 7 | `fix/v2signer-escaped-path` | Sign the escaped path for virtual-hosted V2 requests | https://github.com/randomizedcoder/geesefs/pull/7 | https://github.com/yandex-cloud/geesefs/pull/221 |
+| 8 | `fix/drop-group-before-user` | Drop the group before the user when giving up root | https://github.com/randomizedcoder/geesefs/pull/8 | https://github.com/yandex-cloud/geesefs/pull/222 |
+| 9 | `fix/help-flag` | Make --help print the help and exit successfully | https://github.com/randomizedcoder/geesefs/pull/9 | https://github.com/yandex-cloud/geesefs/pull/223 |
+| 10 | `fix/flusher-priority-index` | Check every lower priority for in-flight flushes in Flusher | https://github.com/randomizedcoder/geesefs/pull/10 | https://github.com/yandex-cloud/geesefs/pull/224 |
+| 11 | `fix/flush-fully-zero-parts` | Flush fully zero parts in step 3 of sendUploadParts | https://github.com/randomizedcoder/geesefs/pull/11 | https://github.com/yandex-cloud/geesefs/pull/225 |
+| 12 | `fix/flush-nil-etag` | Don't dereference a missing ETag after a flush | https://github.com/randomizedcoder/geesefs/pull/12 | https://github.com/yandex-cloud/geesefs/pull/226 |
+| 13 | `fix/cluster-to-errno` | Don't panic in toErrno on errors that are not an errno | https://github.com/randomizedcoder/geesefs/pull/13 | https://github.com/yandex-cloud/geesefs/pull/227 |
 
 ## Upstream PRs (yandex-cloud/geesefs)
 
@@ -38,6 +38,16 @@ Last updated: 2026-10-14.
 | https://github.com/yandex-cloud/geesefs/pull/215 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/1 |
 | https://github.com/yandex-cloud/geesefs/pull/216 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/2 |
 | https://github.com/yandex-cloud/geesefs/pull/217 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/3 |
+| https://github.com/yandex-cloud/geesefs/pull/218 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/4 |
+| https://github.com/yandex-cloud/geesefs/pull/219 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/5 |
+| https://github.com/yandex-cloud/geesefs/pull/220 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/6 |
+| https://github.com/yandex-cloud/geesefs/pull/221 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/7 |
+| https://github.com/yandex-cloud/geesefs/pull/222 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/8 |
+| https://github.com/yandex-cloud/geesefs/pull/223 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/9 |
+| https://github.com/yandex-cloud/geesefs/pull/224 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/10 |
+| https://github.com/yandex-cloud/geesefs/pull/225 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/11 |
+| https://github.com/yandex-cloud/geesefs/pull/226 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/12 |
+| https://github.com/yandex-cloud/geesefs/pull/227 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/13 |
 
 ## Fork PRs (randomizedcoder/geesefs)
 
@@ -46,22 +56,23 @@ Last updated: 2026-10-14.
 | https://github.com/randomizedcoder/geesefs/pull/1 | draft, upstreamed | S3 / GCP IAM | `TestTryIAMErrors` |
 | https://github.com/randomizedcoder/geesefs/pull/2 | draft, upstreamed | Azure config | `TestPickAccountKey` |
 | https://github.com/randomizedcoder/geesefs/pull/3 | draft, upstreamed | ADLv2 | `TestRenewLeaseStops` |
-| https://github.com/randomizedcoder/geesefs/pull/4 | draft, in review | cgroup memory limit | `TestMemoryCgroupDir` |
-| https://github.com/randomizedcoder/geesefs/pull/5 | draft, in review | GCS / Azure metadata | `TestPMetadata` |
-| https://github.com/randomizedcoder/geesefs/pull/6 | draft, in review | S3 config | `TestS3ConfigInitMultipartCopyThreshold` |
-| https://github.com/randomizedcoder/geesefs/pull/7 | draft, in review | S3 V2 signer | `TestV2SignerCanonicalResource` |
-| https://github.com/randomizedcoder/geesefs/pull/8 | draft, in review | main: privilege drop | `TestDropPrivileges` |
-| https://github.com/randomizedcoder/geesefs/pull/9 | draft, in review | main: --help | `TestCheckArgs` |
-| https://github.com/randomizedcoder/geesefs/pull/10 | draft, in review | flusher | `TestAnyFlushInFlight` |
-| https://github.com/randomizedcoder/geesefs/pull/11 | draft, in review | flusher: zero parts | `TestZeroPartsToFlush` |
-| https://github.com/randomizedcoder/geesefs/pull/12 | draft, in review | flush: missing ETag | `TestUpdateFromFlushETag` |
-| https://github.com/randomizedcoder/geesefs/pull/13 | draft, in review | cluster gRPC | `TestToErrno` |
+| https://github.com/randomizedcoder/geesefs/pull/4 | draft, upstreamed | cgroup memory limit | `TestMemoryCgroupDir` |
+| https://github.com/randomizedcoder/geesefs/pull/5 | draft, upstreamed | GCS / Azure metadata | `TestPMetadata` |
+| https://github.com/randomizedcoder/geesefs/pull/6 | draft, upstreamed | S3 config | `TestS3ConfigInitMultipartCopyThreshold` |
+| https://github.com/randomizedcoder/geesefs/pull/7 | draft, upstreamed | S3 V2 signer | `TestV2SignerCanonicalResource` |
+| https://github.com/randomizedcoder/geesefs/pull/8 | draft, upstreamed | main: privilege drop | `TestDropPrivileges` |
+| https://github.com/randomizedcoder/geesefs/pull/9 | draft, upstreamed | main: --help | `TestCheckArgs` |
+| https://github.com/randomizedcoder/geesefs/pull/10 | draft, upstreamed | flusher | `TestAnyFlushInFlight` |
+| https://github.com/randomizedcoder/geesefs/pull/11 | draft, upstreamed | flusher: zero parts | `TestZeroPartsToFlush` |
+| https://github.com/randomizedcoder/geesefs/pull/12 | draft, upstreamed | flush: missing ETag | `TestUpdateFromFlushETag` |
+| https://github.com/randomizedcoder/geesefs/pull/13 | draft, upstreamed | cluster gRPC | `TestToErrno` |
 
 ## Notes
 
-- #8 and #9 both add `main_test.go`; whichever merges second needs a trivial
-  conflict fix in that file.
-- #3 follow-up: `MultipartBlobAbort` in `core/backend_adlv2.go` never signals
+- #8 and #9 (upstream https://github.com/yandex-cloud/geesefs/pull/222 and
+  https://github.com/yandex-cloud/geesefs/pull/223) both add `main_test.go`;
+  whichever merges second needs a trivial conflict fix in that file.
+- #3 (upstream https://github.com/yandex-cloud/geesefs/pull/217) follow-up: `MultipartBlobAbort` in `core/backend_adlv2.go` never signals
   `RenewLeaseStop`, so an aborted upload still renews its lease until the
   process exits.
 - `GOOS=windows go vet ./core` fails on master (`undefined: NewGoofysFuse` in
