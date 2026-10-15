@@ -332,7 +332,9 @@ func (fs *GoofysFuse) LookUpInode(
 
 	inode.Ref()
 	op.Entry.Child = inode.Id
+	inode.mu.Lock()
 	op.Entry.Attributes = inode.InflateAttributes()
+	inode.mu.Unlock()
 	op.Entry.AttributesExpiration = time.Now().Add(fs.flags.StatCacheTTL)
 	op.Entry.EntryExpiration = op.Entry.AttributesExpiration
 	inode.SetExpireLocked(op.Entry.AttributesExpiration)
