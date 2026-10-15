@@ -1606,10 +1606,16 @@ func (inode *Inode) copyUnmodifiedParts(numParts uint64) (err error) {
 		mpu := inode.mpu
 		guard := make(chan int, inode.fs.flags.MaxParallelCopy)
 		var wg sync.WaitGroup
+		// The copy goroutines and this loop share err, so it is only
+		// accessed with errMu held until wg.Wait() returns.
+		var errMu sync.Mutex
 		inode.mu.Unlock()
 		for i := 0; i < len(ranges); i += 3 {
 			guard <- i
-			if err != nil {
+			errMu.Lock()
+			failed := err != nil
+			errMu.Unlock()
+			if failed {
 				break
 			}
 			wg.Add(1)
@@ -1618,7 +1624,9 @@ func (inode *Inode) copyUnmodifiedParts(numParts uint64) (err error) {
 				if inode.mpu == nil {
 					// Upload was canceled (file deleted)
 					inode.mu.Unlock()
+					errMu.Lock()
 					err = syscall.ENOENT
+					errMu.Unlock()
 				} else {
 					inode.mu.Unlock()
 					log.Debugf("Copying unmodified range %v-%v MB of object %v",
@@ -1633,7 +1641,9 @@ func (inode *Inode) copyUnmodifiedParts(numParts uint64) (err error) {
 					if requestErr != nil {
 						log.Warnf("Failed to copy unmodified range %v-%v MB of object %v: %v",
 							offset/1024/1024, (offset+size+1024*1024-1)/1024/1024, key, requestErr)
+						errMu.Lock()
 						err = requestErr
+						errMu.Unlock()
 					} else {
 						mpu.Parts[partNum] = resp.PartId
 					}
