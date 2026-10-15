@@ -30,16 +30,16 @@ Last updated: 2026-10-14.
 | 11 | `fix/flush-fully-zero-parts` | Flush fully zero parts in step 3 of sendUploadParts | https://github.com/randomizedcoder/geesefs/pull/11 | https://github.com/yandex-cloud/geesefs/pull/225 |
 | 12 | `fix/flush-nil-etag` | Don't dereference a missing ETag after a flush | https://github.com/randomizedcoder/geesefs/pull/12 | https://github.com/yandex-cloud/geesefs/pull/226 |
 | 13 | `fix/cluster-to-errno` | Don't panic in toErrno on errors that are not an errno | https://github.com/randomizedcoder/geesefs/pull/13 | https://github.com/yandex-cloud/geesefs/pull/227 |
-| 14 | `fix/race-gcs-delete-blobs` | Fix data race on the error in GCS3.DeleteBlobs | https://github.com/randomizedcoder/geesefs/pull/14 | not yet |
-| 15 | `fix/race-azblob-delete-blobs` | Fix data race on the error in AZBlob.DeleteBlobs | https://github.com/randomizedcoder/geesefs/pull/15 | not yet |
-| 16 | `fix/race-azblob-refresh-token` | Fix data race on the container URL in AZBlob.refreshToken | https://github.com/randomizedcoder/geesefs/pull/16 | not yet |
-| 17 | `fix/race-lookup-maybe-dir` | Fix data races on the results in LookUpInodeMaybeDir | https://github.com/randomizedcoder/geesefs/pull/17 | not yet |
-| 18 | `fix/race-copy-unmodified-parts` | Fix data race on the error in copyUnmodifiedParts | https://github.com/randomizedcoder/geesefs/pull/18 | not yet |
-| 19 | `fix/race-multipart-begin-metadata` | Fix data race on user metadata when a multipart upload starts | https://github.com/randomizedcoder/geesefs/pull/19 | not yet |
-| 20 | `fix/race-file-handles-atomic` | Read inode.fileHandles with atomics | https://github.com/randomizedcoder/geesefs/pull/20 | not yet |
-| 21 | `fix/race-refcnt-atomic` | Access inode.refcnt with atomics only | https://github.com/randomizedcoder/geesefs/pull/21 | not yet |
-| 22 | `fix/race-lookup-inode-attrs` | Fix data races in LookUpInode | https://github.com/randomizedcoder/geesefs/pull/22 | not yet |
-| 23 | `fix/race-cluster-route-info` | Fix data race on the inode owner in ClusterFs.route | https://github.com/randomizedcoder/geesefs/pull/23 | not yet |
+| 14 | `fix/race-gcs-delete-blobs` | Fix data race on the error in GCS3.DeleteBlobs | https://github.com/randomizedcoder/geesefs/pull/14 | https://github.com/yandex-cloud/geesefs/pull/228 |
+| 15 | `fix/race-azblob-delete-blobs` | Fix data race on the error in AZBlob.DeleteBlobs | https://github.com/randomizedcoder/geesefs/pull/15 | https://github.com/yandex-cloud/geesefs/pull/229 |
+| 16 | `fix/race-azblob-refresh-token` | Fix data race on the container URL in AZBlob.refreshToken | https://github.com/randomizedcoder/geesefs/pull/16 | https://github.com/yandex-cloud/geesefs/pull/230 |
+| 17 | `fix/race-lookup-maybe-dir` | Fix data races on the results in LookUpInodeMaybeDir | https://github.com/randomizedcoder/geesefs/pull/17 | https://github.com/yandex-cloud/geesefs/pull/231 |
+| 18 | `fix/race-copy-unmodified-parts` | Fix data race on the error in copyUnmodifiedParts | https://github.com/randomizedcoder/geesefs/pull/18 | https://github.com/yandex-cloud/geesefs/pull/232 |
+| 19 | `fix/race-multipart-begin-metadata` | Fix data race on user metadata when a multipart upload starts | https://github.com/randomizedcoder/geesefs/pull/19 | https://github.com/yandex-cloud/geesefs/pull/233 |
+| 20 | `fix/race-file-handles-atomic` | Read inode.fileHandles with atomics | https://github.com/randomizedcoder/geesefs/pull/20 | https://github.com/yandex-cloud/geesefs/pull/234 |
+| 21 | `fix/race-refcnt-atomic` | Access inode.refcnt with atomics only | https://github.com/randomizedcoder/geesefs/pull/21 | https://github.com/yandex-cloud/geesefs/pull/235 |
+| 22 | `fix/race-lookup-inode-attrs` | Fix data races in LookUpInode | https://github.com/randomizedcoder/geesefs/pull/22 | https://github.com/yandex-cloud/geesefs/pull/236 |
+| 23 | `fix/race-cluster-route-info` | Fix data race on the inode owner in ClusterFs.route | https://github.com/randomizedcoder/geesefs/pull/23 | https://github.com/yandex-cloud/geesefs/pull/237 |
 
 ## Upstream PRs (yandex-cloud/geesefs)
 
@@ -58,6 +58,16 @@ Last updated: 2026-10-14.
 | https://github.com/yandex-cloud/geesefs/pull/225 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/11 |
 | https://github.com/yandex-cloud/geesefs/pull/226 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/12 |
 | https://github.com/yandex-cloud/geesefs/pull/227 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/13 |
+| https://github.com/yandex-cloud/geesefs/pull/228 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/14 |
+| https://github.com/yandex-cloud/geesefs/pull/229 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/15 |
+| https://github.com/yandex-cloud/geesefs/pull/230 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/16 |
+| https://github.com/yandex-cloud/geesefs/pull/231 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/17 |
+| https://github.com/yandex-cloud/geesefs/pull/232 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/18 |
+| https://github.com/yandex-cloud/geesefs/pull/233 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/19 |
+| https://github.com/yandex-cloud/geesefs/pull/234 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/20 |
+| https://github.com/yandex-cloud/geesefs/pull/235 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/21 |
+| https://github.com/yandex-cloud/geesefs/pull/236 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/22 |
+| https://github.com/yandex-cloud/geesefs/pull/237 | open, mergeable; no reviews or CI runs yet | https://github.com/randomizedcoder/geesefs/pull/23 |
 
 ## Fork PRs (randomizedcoder/geesefs)
 
@@ -76,16 +86,16 @@ Last updated: 2026-10-14.
 | https://github.com/randomizedcoder/geesefs/pull/11 | draft, upstreamed | flusher: zero parts | `TestZeroPartsToFlush` |
 | https://github.com/randomizedcoder/geesefs/pull/12 | draft, upstreamed | flush: missing ETag | `TestUpdateFromFlushETag` |
 | https://github.com/randomizedcoder/geesefs/pull/13 | draft, upstreamed | cluster gRPC | `TestToErrno` |
-| https://github.com/randomizedcoder/geesefs/pull/14 | draft, in review | GCS backend | `TestGCS3DeleteBlobsConcurrentErrors` |
-| https://github.com/randomizedcoder/geesefs/pull/15 | draft, in review | Azure Blob backend | `TestAZBlobDeleteBlobsConcurrentErrors` |
-| https://github.com/randomizedcoder/geesefs/pull/16 | draft, in review | Azure Blob SAS token | `TestAZBlobRefreshTokenConcurrent` |
-| https://github.com/randomizedcoder/geesefs/pull/17 | draft, in review | lookup (HEAD/LIST) | `TestLookUpInodeMaybeDirConcurrent` |
-| https://github.com/randomizedcoder/geesefs/pull/18 | draft, in review | multipart copy | `TestCopyUnmodifiedPartsConcurrentErrors` |
-| https://github.com/randomizedcoder/geesefs/pull/19 | draft, in review | multipart begin | `TestBeginMultipartUploadMetadata` |
-| https://github.com/randomizedcoder/geesefs/pull/20 | draft, in review | inode fileHandles | `TestFileHandlesConcurrentRead` |
-| https://github.com/randomizedcoder/geesefs/pull/21 | draft, in review | inode refcnt | `TestRefcntConcurrentRead` |
-| https://github.com/randomizedcoder/geesefs/pull/22 | draft, in review | FUSE LookUpInode | `TestLookUpInodeConcurrentAttributes` |
-| https://github.com/randomizedcoder/geesefs/pull/23 | draft, in review | cluster routing | `TestClusterRouteConcurrentOwnerChange` |
+| https://github.com/randomizedcoder/geesefs/pull/14 | draft, upstreamed | GCS backend | `TestGCS3DeleteBlobsConcurrentErrors` |
+| https://github.com/randomizedcoder/geesefs/pull/15 | draft, upstreamed | Azure Blob backend | `TestAZBlobDeleteBlobsConcurrentErrors` |
+| https://github.com/randomizedcoder/geesefs/pull/16 | draft, upstreamed | Azure Blob SAS token | `TestAZBlobRefreshTokenConcurrent` |
+| https://github.com/randomizedcoder/geesefs/pull/17 | draft, upstreamed | lookup (HEAD/LIST) | `TestLookUpInodeMaybeDirConcurrent` |
+| https://github.com/randomizedcoder/geesefs/pull/18 | draft, upstreamed | multipart copy | `TestCopyUnmodifiedPartsConcurrentErrors` |
+| https://github.com/randomizedcoder/geesefs/pull/19 | draft, upstreamed | multipart begin | `TestBeginMultipartUploadMetadata` |
+| https://github.com/randomizedcoder/geesefs/pull/20 | draft, upstreamed | inode fileHandles | `TestFileHandlesConcurrentRead` |
+| https://github.com/randomizedcoder/geesefs/pull/21 | draft, upstreamed | inode refcnt | `TestRefcntConcurrentRead` |
+| https://github.com/randomizedcoder/geesefs/pull/22 | draft, upstreamed | FUSE LookUpInode | `TestLookUpInodeConcurrentAttributes` |
+| https://github.com/randomizedcoder/geesefs/pull/23 | draft, upstreamed | cluster routing | `TestClusterRouteConcurrentOwnerChange` |
 
 ## Notes
 
@@ -106,7 +116,7 @@ Last updated: 2026-10-14.
   benchstat table. #16, #22 and #23 have a second, separate
   performance commit; #18 has a second commit that switches the loops
   in `copyUnmodifiedParts` to `range`.
-- #20 (https://github.com/randomizedcoder/geesefs/pull/20) touches
+- #20 (upstream https://github.com/yandex-cloud/geesefs/pull/234) touches
   `sendUploadParts`, which upstream https://github.com/yandex-cloud/geesefs/pull/225
   also changes; expect a trivial conflict, or none.
 
