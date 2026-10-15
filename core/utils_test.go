@@ -1,6 +1,7 @@
 package core
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -88,5 +89,79 @@ func TestPMetadata(t *testing.T) {
 			}
 		})
 	}
+}
 
+// FuzzPMetadata checks properties of PMetadata that hold for any input. Go
+// fuzzing cannot generate maps, so each input is built from up to three
+// key/value pairs; pairs whose keys collide simply overwrite each other, as
+// they would in a map literal.
+func FuzzPMetadata(f *testing.F) {
+	seeds := []struct {
+		description            string
+		k1, v1, k2, v2, k3, v3 string
+	}{
+		{description: "lowercase key", k1: "owner", v1: "alice"},
+		{description: "mixed-case key", k1: "Content-Owner", v1: "alice"},
+		{description: "uppercase key", k1: "OWNER", v1: "alice"},
+		{description: "empty key and value", k1: "", v1: ""},
+		{description: "several mixed-case keys", k1: "A", v1: "1", k2: "bB", v2: "2", k3: "c", v3: "3"},
+		{description: "non-ASCII uppercase key", k1: "ÄRGER", v1: "x"},
+		{description: "keys that differ only in case", k1: "Key", v1: "upper", k2: "key", v2: "lower"},
+		{description: "invalid UTF-8 key", k1: "\xffOwner", v1: "alice"},
+	}
+	for _, s := range seeds {
+		f.Add(s.k1, s.v1, s.k2, s.v2, s.k3, s.v3)
+	}
+
+	f.Fuzz(func(t *testing.T, k1, v1, k2, v2, k3, v3 string) {
+		input := map[string]string{k1: v1, k2: v2, k3: v3}
+
+		// Expected: for each lowercased key, the values of the input keys
+		// that lowercase to it.
+		candidates := make(map[string][]string)
+		for k, v := range input {
+			lk := strings.ToLower(k)
+			candidates[lk] = append(candidates[lk], v)
+		}
+
+		got := PMetadata(input)
+		if got == nil {
+			t.Fatalf("PMetadata(%q) returned nil", input)
+		}
+		if len(got) != len(candidates) {
+			t.Fatalf("PMetadata(%q) returned %d keys, expected %d", input, len(got), len(candidates))
+		}
+
+		seen := make(map[*string]string)
+		for k, v := range got {
+			if strings.ToLower(k) != k {
+				t.Errorf("key %q is not lowercase", k)
+			}
+			want, ok := candidates[k]
+			if !ok {
+				t.Errorf("unexpected key %q", k)
+				continue
+			}
+			if v == nil {
+				t.Errorf("key %q has a nil value, expected one of %q", k, want)
+				continue
+			}
+			if !containsString(want, *v) {
+				t.Errorf("key %q = %q, expected one of %q", k, *v, want)
+			}
+			if other, dup := seen[v]; dup {
+				t.Errorf("keys %q and %q share a value pointer", other, k)
+			}
+			seen[v] = k
+		}
+	})
+}
+
+func containsString(list []string, s string) bool {
+	for _, x := range list {
+		if x == s {
+			return true
+		}
+	}
+	return false
 }
