@@ -121,8 +121,7 @@ func BenchmarkCopyUnmodifiedParts(b *testing.B) {
 		b.Run(fmt.Sprintf("%dparts", numParts), func(b *testing.B) {
 			inode := newCopyPartsInode(copyFunc, numParts, nil, 16)
 			b.ReportAllocs()
-			b.ResetTimer()
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				// Reset the part IDs so every part is copied again. This is
 				// cheaper than StopTimer/StartTimer, which stop the world
 				// to read memory stats.
